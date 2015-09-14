@@ -1,9 +1,9 @@
-Building TheoremCoin
+Building BlackCoin
 
-See doc/readme-qt.rst for instructions on building TheoremCoin QT,
+See doc/readme-qt.rst for instructions on building BlackCoin QT,
 the intended-for-end-users, nice-graphical-interface, reference
-implementation of TheoremCoin.
+implementation of BlackCoin.
 
-See doc/build-*.txt for instructions on building theoremcoind,
+See doc/build-*.txt for instructions on building blackcoind,
 the intended-for-services, no-graphical-interface, reference
-implementation of TheoremCoin.
+implementation of BlackCoin.

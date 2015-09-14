@@ -1,7 +1,7 @@
 src/*.exe
-src/theoremcoin
-src/theoremcoind
-src/test_theoremcoin
+src/blackcoin
+src/blackcoind
+src/test_blackcoin
 src/build.h
 .*.swp
 *.*~*
@@ -10,11 +10,11 @@ src/build.h
 *.orig
 *.o
 *.patch
-.theoremcoin
+.blackcoin
 #compilation and Qt preprocessor part
 *.qm
 Makefile
-theoremcoin-qt
+blackcoin-qt
 #resources cpp
 qrc_*.cpp
 #qt creator

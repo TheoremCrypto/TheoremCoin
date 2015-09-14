@@ -519,7 +519,7 @@ void ThreadStakeMiner(CWallet *pwallet)
     SetThreadPriority(THREAD_PRIORITY_LOWEST);
 
     // Make this thread recognisable as the mining thread
-    RenameThread("theoremcoin-miner");
+    RenameThread("blackcoin-miner");
 
     CReserveKey reservekey(pwallet);
 

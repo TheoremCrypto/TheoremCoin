@@ -7,23 +7,23 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleGetInfoString</key>
-	<string>TheoremCoin-Qt</string>
+	<string>BlackCoin-Qt</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleExecutable</key>
-	<string>TheoremCoin-Qt</string>
+	<string>BlackCoin-Qt</string>
 	<key>CFBundleIdentifier</key>
-	<string>co.theoremcoin.TheoremCoin-Qt</string>
+	<string>co.blackcoin.BlackCoin-Qt</string>
         <key>CFBundleURLTypes</key>
         <array>
           <dict>
             <key>CFBundleTypeRole</key>
             <string>Editor</string>
             <key>CFBundleURLName</key>
-            <string>co.theoremcoin.TheoremCoinPayment</string>
+            <string>co.blackcoin.BlackCoinPayment</string>
             <key>CFBundleURLSchemes</key>
             <array>
-              <string>theoremcoin</string>
+              <string>blackcoin</string>
             </array>
           </dict>
         </array>
