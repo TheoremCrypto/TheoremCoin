@@ -22,7 +22,7 @@ using namespace std;
 using namespace boost;
 
 #if defined(NDEBUG)
-# error "BlackCoin cannot be compiled without assertions."
+# error "TheoremCoin cannot be compiled without assertions."
 #endif
 
 //
@@ -39,13 +39,13 @@ CTxMemPool mempool;
 map<uint256, CBlockIndex*> mapBlockIndex;
 set<pair<COutPoint, unsigned int> > setStakeSeen;
 
-CBigNum bnProofOfStakeLimit(~uint256(0) >> 20);
-CBigNum bnProofOfStakeLimitV2(~uint256(0) >> 48);
+CBigNum bnProofOfStakeLimit(~uint256(0) >> 2);
+CBigNum bnProofOfStakeLimitV2(~uint256(0) >> 2);
 
-unsigned int nStakeMinAge = 8 * 60 * 60; // 8 hours
-unsigned int nModifierInterval = 10 * 60; // time to elapse before new modifier is computed
+unsigned int nStakeMinAge = 4 * 60 * 60; // 4 hours
+unsigned int nModifierInterval = 5 * 60; // time to elapse before new modifier is computed
 
-int nCoinbaseMaturity = 500;
+int nCoinbaseMaturity = 42;
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
 
@@ -75,7 +75,7 @@ map<uint256, set<uint256> > mapOrphanTransactionsByPrev;
 // Constant stuff for coinbase transactions we create:
 CScript COINBASE_FLAGS;
 
-const string strMessageMagic = "BlackCoin Signed Message:\n";
+const string strMessageMagic = "TheoremCoin Signed Message:\n";
 
 extern enum Checkpoints::CPMode CheckpointsMode;
 
@@ -268,7 +268,7 @@ bool CTransaction::ReadFromDisk(COutPoint prevout)
 
 bool IsStandardTx(const CTransaction& tx, string& reason)
 {
-    if (tx.nVersion > CTransaction::CURRENT_VERSION || tx.nVersion < 1) {
+    if (tx.nVersion > CTransaction::CURRENT_VERSION) {
         reason = "version";
         return false;
     }
@@ -967,9 +967,82 @@ static CBigNum GetProofOfStakeLimit(int nHeight)
 }
 
 // miner's coin base reward
-int64_t GetProofOfWorkReward(int64_t nFees)
+int64_t GetProofOfWorkReward(int64_t nFees, int nHeight)
 {
-    int64_t nSubsidy = 10000 * COIN;
+    int64_t nSubsidy = 2 * COIN;
+
+    if(nHeight == 1)
+    {
+        nSubsidy = 2000000 * COIN;
+    }
+    else if(nHeight <= 200)
+    {
+        nSubsidy = 0 * COIN;
+    }
+    else if(nHeight <= 1000)
+    {
+        nSubsidy = 160 * COIN;
+    }        
+    else if(nHeight <= 3400)
+    {
+        nSubsidy = 80 * COIN;
+    }
+    else if(nHeight <= 8416)
+    {
+        nSubsidy = 20 * COIN;
+    }
+    else if(nHeight <= 22816)
+    {
+        nSubsidy = 10 * COIN;
+    }
+    else if(nHeight <= 51616)
+    {
+        nSubsidy = 5 * COIN;
+    }
+    else if(nHeight <= 135000)
+    {
+        nSubsidy = 3 * COIN;
+    }
+    else if(nHeight <= 140000)
+    {
+        nSubsidy = 10 * COIN;
+    }
+    else if(nHeight <= 145000)
+    {
+        nSubsidy = 20 * COIN;
+    }
+    else if(nHeight <= 148800)
+    {
+        nSubsidy = 80 * COIN;
+    }
+    else if(nHeight <= 150000)
+    {
+        nSubsidy = 160 * COIN;
+    }
+    else if(nHeight <= 153800)
+    {
+        nSubsidy = 60 * COIN;
+    }
+    else if(nHeight <= 159800)
+    {
+        nSubsidy = 15 * COIN;
+    }
+    else if(nHeight <= 250000)
+    {
+        nSubsidy = 8 * COIN;
+    }
+    else if(nHeight <= 400000)
+    {
+        nSubsidy = 6 * COIN;
+    }
+    else if(nHeight <= 700000)
+    {
+        nSubsidy = 4 * COIN;
+    }
+    else
+    {
+        nSubsidy = 2 * COIN;
+    }
 
     LogPrint("creation", "GetProofOfWorkReward() : create=%s nSubsidy=%d\n", FormatMoney(nSubsidy), nSubsidy);
 
@@ -977,16 +1050,85 @@ int64_t GetProofOfWorkReward(int64_t nFees)
 }
 
 // miner's coin stake reward based on coin age spent (coin-days)
-int64_t GetProofOfStakeReward(int64_t nCoinAge, int64_t nFees)
+int64_t GetProofOfStakeReward(int64_t nCoinAge, int64_t nFees, int nHeight)
 {
-    int64_t nSubsidy = nCoinAge * COIN_YEAR_REWARD * 33 / (365 * 33 + 8);
+    int64_t nSubsidy = 2 * COIN;
+
+    if(nHeight <= 200)
+    {
+        nSubsidy = 0 * COIN;
+    }
+    else if(nHeight <= 1000)
+    {
+        nSubsidy = 200 * COIN;
+    }
+     else if(nHeight <= 3400)
+    {
+        nSubsidy = 100 * COIN;
+    }
+    else if(nHeight <= 8416)
+    {
+        nSubsidy = 25 * COIN;
+    }
+    else if(nHeight <= 22816)
+    {
+        nSubsidy = 12.5 * COIN;
+    }
+    else if(nHeight <= 51616)
+    {
+        nSubsidy = 6.25 * COIN;
+    }
+    else if(nHeight <= 135000)
+    {
+        nSubsidy = 3 * COIN;
+    }
+    else if(nHeight <= 140000)
+    {
+        nSubsidy = 8 * COIN;
+    }
+    else if(nHeight <= 145000)
+    {
+        nSubsidy = 15 * COIN;
+    }
+    else if(nHeight <= 148800)
+    {
+        nSubsidy = 60 * COIN;
+    }
+    else if(nHeight <= 150000)
+    {
+        nSubsidy = 160 * COIN;
+    }
+    else if(nHeight <= 153800)
+    {
+        nSubsidy = 50 * COIN;
+    }
+    else if(nHeight <= 159800)
+    {
+        nSubsidy = 15 * COIN;
+    }
+    else if(nHeight <= 250000)
+    {
+        nSubsidy = 8 * COIN;
+    }
+    else if(nHeight <= 400000)
+    {
+        nSubsidy = 6 * COIN;
+    }
+    else if(nHeight <= 700000)
+    {
+        nSubsidy = 4 * COIN;
+    }
+    else
+    {
+        nSubsidy = 2 * COIN;
+    }
 
     LogPrint("creation", "GetProofOfStakeReward(): create=%s nCoinAge=%d\n", FormatMoney(nSubsidy), nCoinAge);
 
     return nSubsidy + nFees;
 }
 
-static const int64_t nTargetTimespan = 16 * 60;  // 16 mins
+static const int64_t nTargetTimespan = 32 * 60;  // 32 mins
 
 // ppcoin: find last block index up to pindex
 const CBlockIndex* GetLastBlockIndex(const CBlockIndex* pindex, bool fProofOfStake)
@@ -1477,7 +1619,7 @@ bool CBlock::ConnectBlock(CTxDB& txdb, CBlockIndex* pindex, bool fJustCheck)
         if (!vtx[1].GetCoinAge(txdb, nCoinAge))
             return error("ConnectBlock() : %s unable to get coin age for coinstake", vtx[1].GetHash().ToString());
 
-        int64_t nCalculatedStakeReward = GetProofOfStakeReward(nCoinAge, nFees);
+        int64_t nCalculatedStakeReward = GetProofOfStakeReward(nCoinAge, nFees, pindex->nHeight);
 
         if (nStakeReward > nCalculatedStakeReward)
             return DoS(100, error("ConnectBlock() : coinstake pays too much(actual=%d vs calculated=%d)", nStakeReward, nCalculatedStakeReward));
@@ -2592,7 +2734,7 @@ struct CImportingNow
 
 void ThreadImport(std::vector<boost::filesystem::path> vImportFiles)
 {
-    RenameThread("blackcoin-loadblk");
+    RenameThread("theoremcoin-loadblk");
 
     CImportingNow imp;
 

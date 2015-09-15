@@ -1,6 +1,6 @@
 [Protocol]
-exec=blackcoin-qt '%u'
-protocol=blackcoin
+exec=theoremcoin-qt '%u'
+protocol=theoremcoin
 input=none
 output=none
 helper=true
